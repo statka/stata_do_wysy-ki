@@ -1,0 +1,96 @@
+---
+title: "Stata3"
+author: "Jakub Bauer"
+numer_albumu: "99029"
+output:
+  html_document: default
+---
+
+```{R,  include=FALSE}
+library("nortest")
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+---
+
+# Zadania
+######Jakub Bauer 99029
+
+---
+
+``` {R}
+wzrost <- c(188,165,172,160,164,175,164,178,184,203,200,193,182,187,173,183,194,180,180,187,179,180)
+plec <- c("M","K","K","K","K","M","K","M","M","M","M","M","M","M","K","M","M","M","M","M","M","M")
+ramka = data.frame(wzrost, plec)
+attr(ramka, 'names')=c('wzrost','plec')
+```
+
+
+
+## Zadanie 1
+### Ktore z podanych wyzej parametrow wymagane sa dla okreslenia rozkladu normalnego ? Uzasadnij.
+
+ Do okreslenia rozkladu normalnego potrzeba Warosci oczekiwanej i odchylenia standardowego.
+ Te 2 wartosci sa wystarczajace do okreslenia rozkladu normalnego na podstawie wzoru na funkcje gestosci rozkadu normalnego
+ Warosc oczekiwana jest potrzeba poniewaz okresla spodziewany wynik doswiadczenia losowego
+
+---
+
+## Zadanie 2
+### Znajdz inny test na normalnosc rozkladu i przetestuj przeanalizowany przyklad. Jaka minimalna ilosc danych potrzebujesz dla wybranego przez siebie testu?
+
+#### Test Shapiro-Wilka
+```{r}
+dane1 <- c(96.19,98.06, 103.45, 99.81, 101.60, 104.33)
+shapiro.test(dane1)
+```
+
+#### Test Cramer-von Mises (ilosc danych musi byc > 7)
+```{r}
+dane1 <- c(96.19,98.06, 103.45, 99.81, 101.60, 104.33, 102.23, 105.99)
+cvm.test(dane1)
+```
+
+---
+
+## Zadanie 3
+### Wygeneruj 300 elementowy wektor danych, na ktorym napewno odrzucisz hipoteze zerowa dla testu Shapiro-Wilka.
+
+Generowanie 300 elementowego wektora
+```{r}
+dane1 <- sample(c(0:1), 300, replace = TRUE)
+```
+
+####Test Shapiro-Wilka
+```{r}
+shapiro.test(dane1)
+```
+
+---
+
+## Zadanie 4
+### Do podanych na tablicy danych wzrostu Twojej grupy zweryfikuj czy sredni wzrost grupy jest rowny sredniemu wzrostowi w Polsce (180cm).
+
+Test t-studenta dla jednej proby
+```{r}
+t.test(ramka$wzrost,mu=180)
+```
+
+---
+
+## Zadanie 5
+### Zweryfikuj czy sredni wzrost w grupie rozni sie w zaleznosci od plci?
+
+Podzial grupy na kobiety i mezczyzn
+```{r}
+wzrost_m = c(188,175,178,184,203,200,193,182,187,183,194,180,180,187,179,180)
+wzrost_k = c(165,172,160,164,164,173)
+```
+
+####Test na niezaleznosc
+```{r}
+chisq.test(cbind(wzrost_k,wzrost_m))
+```
+

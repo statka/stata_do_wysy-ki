@@ -1,0 +1,70 @@
+---
+title: "zadanko statka"
+author: "Aleksandrowicz"
+date: "31 marca 2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+<br>Tworzymy 2 wektory odpowiadajace za wzrost oraz p?e?
+
+```{r wektory}
+wzrost_m=c(188,175,178,184,203,200,193,182,187,183,194,180,180,187,179,180,165,172,160,164,164,173)
+plec=c("M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","K","K","K","K","K","K")
+```
+
+<br> Tworzymy ramk? danych oraz nazywamy kolumny
+```{r}
+ramka=data.frame(wzrost_m,plec)
+attr(ramka, 'names')=c('Wzrost','Plec')
+```
+
+**Zadanie 1**
+
+Warto?? oczekiwana oraz ochylenie standardowe
+
+$$ f(x) = \frac{1}{\sqrt{2\pi\sigma^2}}e^{\frac{-(x-\mu)^2}{2\sigma^2}} $$
+
+**Zadanie 2**
+
+```
+install.packages("nortest")
+library(nortest)
+cvm.test
+```
+
+**Zadanie 3**
+
+Najpierw wygenerujemy wektor 300 elementów
+```{r}
+dane1 <- sample(c(0:100), 300, replace = TRUE)
+```
+
+Następnie wykonujemy test Shapiro-wilka
+```{r}
+shapiro.test(dane1)
+```
+
+**Zadanie 4**
+
+Dla naszej ramki z daymi przeprowadzamy test T Studenta
+Ze wzgl?du na test Shapiro Wilka mo?emy przyj?? hipotez?.
+
+```{r}
+t.test(ramka$Wzrost,mu=180)
+```
+
+t = 0.20459, df = 21, p-value = 0.8399
+
+**Zadanie 5**
+Najpierw utwórzmy 2 wektory ze wzrostem dla kobiet oraz mężczyzn
+```{r}
+wzrost_m=c(188,175,178,184,203,200,193,182,187,183,194,180,180,187,179,180)
+wzrost_k=c(165,172,160,164,164,173)
+```
+
+Teraz wykonamy test na niezależność
+```{r}
+chisq.test(cbind(wzrost_k,wzrost_m))
+```

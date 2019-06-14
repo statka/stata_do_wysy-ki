@@ -1,0 +1,186 @@
+---
+title: "STATYSTYKA LABORATORIUM 1"
+author: "MAGDALENA ZUBALA"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+###ZA£O¯ENIA POCZ¥TKOWE
+
+Do realizacji zadañ zosta³y zainstalowane i u¿yte pakiety:
+
+    install.packages("dplyr")
+    install.packages("PogromcyDanych")
+
+    library(dplyr)
+    packageVersion("dplyr")
+
+    library(PogromcyDanych)
+    
+###ZADANIE 1
+
+    auta2012%>%
+    group_by(Marka)%>%
+    summarise(najczesciej=n())%>%
+    arrange(desc(najczesciej))%>%
+    filter(najczesciej==max(najczesciej))
+    
+###ZADANIE 2
+
+    auta2012%>%
+    filter(Marka == "Toyota")%>%
+    group_by(Model)%>%
+    summarise(najczesciej = n())%>%
+    arrange(desc(najczesciej))%>%
+    filter(najczesciej==max(najczesciej))
+    
+###ZADANIE 3
+
+    auta2012 %>%
+    filter(Rok.produkcji == 2007) %>%
+    filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+    summarize(ilosc = n())
+    
+###ZADANIE 4
+
+    auta2012 %>%
+    filter(Rok.produkcji == 2007) %>%
+    group_by(Marka) %>%
+    summarize(najczesciej = n()) %>%
+    arrange(desc(najczesciej))%>%
+    filter(najczesciej==max(najczesciej))
+    
+###ZADANIE 5
+
+    auta2012%>%
+    filter(Rok.produkcji<=2008,Rok.produkcji>=2007,Marka=='Toyota')%>%
+    summarise(ilosc = n())%>%
+    arrange(desc(ilosc))%>%
+    filter(ilosc==max(ilosc))
+    
+###ZADANIE 6
+
+    auta2012 %>%
+    filter(Rok.produkcji == 2007) %>%
+    filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+    group_by((Marka))%>%
+    summarise(najdrozsza = max(Cena.w.PLN))%>%
+    arrange(desc(najdrozsza))%>%
+    filter(najdrozsza==max(najdrozsza))
+    
+    
+###ZADANIE 7
+
+    auta2012 %>%
+    summarise(liczba.aut.z.klimatyzacja = sum(grepl("klimatyzacja", Wyposazenie.dodatkowe)))
+    
+###ZADANIE 8
+
+    auta2012 %>%
+    filter(KM > 100)%>%
+    group_by(Marka)%>%
+    summarise(najczesciej = n())%>%
+    arrange(desc(najczesciej))%>%
+    filter(najczesciej==max(najczesciej))
+    
+###ZADANIE 9
+
+    roznica <- c()
+    roznica <-auta2012 %>% 
+      select(Marka,Model,Rodzaj.paliwa,Cena) %>%
+      filter(Marka=='Toyota', grepl('^benzyna$|diesel',Rodzaj.paliwa),Model!='inny') %>%
+      group_by(Model,Rodzaj.paliwa) %>%
+      summarise(sredniacena=srednia(Cena)) %>%
+      mutate(roznica=abs(sredniacena-lag(sredniacena,1))) %>%
+      ungroup %>%
+      select(Model,roznica) %>%
+      arrange((roznica))
+      
+###ZADANIE 10
+
+    auta2012 %>%
+    filter(Rok.produkcji == 2007) %>%
+    filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+    group_by((Marka))%>%
+    summarise(cena = max(Cena.w.PLN))%>%
+    arrange(desc(cena))%>%
+    filter(cena==min(cena))
+    
+###ZADANIE 11
+
+    auta2012 %>%
+    filter(Wyposazenie.dodatkowe == "klimatyzacja")%>%
+    group_by(Marka)%>%
+    summarise(klimatyzacja = n())%>%
+    arrange(desc(klimatyzacja))%>%
+    filter(klimatyzacja==max(klimatyzacja))
+    
+###ZADANIE 12
+
+    auta2012 %>%
+    filter(Cena.w.PLN > 50000)%>%
+    group_by(Marka)%>%
+    summarise(cena = n())%>%
+    arrange(desc(cena))%>%
+    filter(cena==max(cena))
+    
+###ZADANIE 13
+
+    auta2012%>%
+    filter(Marka == "Toyota") %>%
+    group_by(Model)%>%
+    summarise(najwiekszy = median(Przebieg.w.km, na.rm=TRUE))%>%
+    arrange(desc(najwiekszy))%>%
+    filter(najwiekszy == max(najwiekszy))
+
+###ZADANIE 14
+
+    auta2012 %>%
+    filter(Rok.produkcji == 2007) %>%
+    filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+    group_by((Model))%>%
+    summarise(najdrozszy = max(Cena.w.PLN))%>%
+    arrange(desc(najdrozszy))%>%
+    filter(najdrozszy==max(najdrozszy))
+    
+###ZADANIE 15
+
+    auta2012 %>%
+    filter(Wyposazenie.dodatkowe == "klimatyzacja")%>%
+    group_by(Model)%>%
+    summarise(najczesciej = n())%>%
+    arrange(desc(najczesciej))%>%
+    filter(najczesciej==max(najczesciej))
+    
+###ZADANIE 16
+
+    auta2012 %>%
+    filter(Przebieg.w.km < 50000) %>%
+    filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+    group_by((Marka))%>%
+    summarise(najczesciej = n())%>%
+    arrange(desc(najczesciej))%>%
+    filter(najczesciej==max(najczesciej))
+    
+###ZADANIE 17
+
+    auta2012 %>%
+    filter(Rok.produkcji == 2007) %>%
+    filter(Marka == "Toyota") %>%
+    group_by((Model))%>%
+    summarise(snajdrozszy = mean(Cena.w.PLN))%>%
+    arrange(desc(snajdrozszy))%>%
+    filter(snajdrozszy==max(snajdrozszy))
+    
+###ZADANIE 18
+
+    auta2012 %>%
+    filter(Przebieg.w.km < 50000) %>%
+    filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+    group_by((Marka))%>%
+    summarise(najtanszy = n())%>%
+    arrange(desc(najtanszy))%>%
+    filter(najtanszy==max(najtanszy))

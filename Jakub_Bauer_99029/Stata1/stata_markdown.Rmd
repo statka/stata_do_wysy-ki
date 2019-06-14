@@ -1,0 +1,236 @@
+---
+title: "Stata"
+author: "Jakub Bauer"
+numer_albumu: "99029"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{R,  include=FALSE}
+library(dplyr)
+library(PogromcyDanych)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+---
+# Zadania
+######Jakub Bauer 99029
+---
+### 1. Ktora Marka wystepuje najczesciej w zbiorze danych auta2012?
+``` {r}
+auta2012 %>%
+  group_by(Marka) %>%
+  summarise(liczba = n()) %>%
+  arrange(desc(liczba)) %>%
+  filter(liczba == max(liczba))
+```
+---
+
+### 2. Sposrod aut marki Toyota, kt?ry model wystepuje najczesciej.
+``` {r}
+auta2012 %>%
+  filter(Marka == "Toyota") %>%
+  group_by(Model) %>%
+  summarise(liczba = n()) %>%
+  arrange(desc(liczba)) %>%
+  filter(liczba == max(liczba))
+```
+---
+
+### 3. Sprawdz ile jest aut z silnikiem diesla wyprodukowanych w 2007 roku?
+``` {r}
+auta2012 %>%
+  select(Rok.produkcji, Rodzaj.paliwa) %>%
+  filter(Rok.produkcji == 2007, 
+         grepl('diesel', Rodzaj.paliwa)) %>%
+  group_by(Rok.produkcji, Rodzaj.paliwa) %>%
+  summarise(liczba = n())
+```
+---
+
+### 4.(1) Jakiego koloru auta maja najmniejszy medianowy przebieg?
+``` {r}
+auta2012 %>%
+  select(Kolor, Przebieg.w.km)%>%
+  group_by(Kolor, Przebieg.w.km)%>%
+  summarise(mediana = median(Przebieg.w.km, na.rm = TRUE))%>%
+  arrange(mediana)
+```
+---
+
+### 4.(2) Gdy ograniczyc sie tylko do aut wyprodukowanych w 2007, ktora Marka wystepuje najczesciej w zbiorze danych auta2012?
+``` {r}
+auta2012 %>%
+  select(Rok.produkcji, Marka) %>%
+  filter(Rok.produkcji == 2007) %>%
+  group_by(Rok.produkcji, Marka) %>%
+  summarise(liczba = n()) %>%
+  arrange(desc(liczba)) %>%
+  filter(liczba == max(liczba))
+```
+---
+
+### 5. Sposrod aut marki Toyota, kt?ry model najbardziej stracil na cenie pomiedzy rokiem produkcji 2007 a 2008.
+``` {r}
+auta2012 %>%
+  select(Marka, Model, Cena, Rok.produkcji) %>%
+  filter(Rok.produkcji >= 2007, Rok.produkcji <= 2008, Marka == "Toyota") %>%
+  group_by(Model, Rok.produkcji) %>%
+  summarise(moja.cena = mean(Cena)) %>%
+  mutate(roznica = moja.cena - lag(moja.cena, 1)) %>%
+  select(Rok.produkcji, Model, roznica) %>%
+  arrange(roznica)
+```
+---
+
+### 6. Sposrod aut z silnikiem diesla wyprodukowanych w 2007 roku ktora marka jest najdrozsza?
+``` {r}
+auta2012 %>%
+  select(Marka, Model, Cena.w.PLN, Rodzaj.paliwa, Rok.produkcji) %>%
+  filter(Rok.produkcji==2007, Rodzaj.paliwa=="olej napedowy (diesel)") %>%
+  group_by(Marka, Model, Cena.w.PLN) %>%
+  arrange(desc(Cena.w.PLN))
+```
+---
+
+### 7. Ile jest aut z klimatyzacja?
+``` {r}
+auta2012 %>%
+  select(Wyposazenie.dodatkowe) %>%
+  filter(Wyposazenie.dodatkowe=="klimatyzacja") %>%
+  summarise(liczba = n()) %>%
+  arrange(desc(liczba))
+```
+---
+
+### 8. Gdy ograniczyc sie tylko do aut z silnikiem ponad 100 KM, ktora Marka wystepuje najczesciej w zbiorze danych auta2012?
+``` {r}
+auta2012 %>%
+  select(KM,Marka) %>%
+  filter(KM>100) %>%
+  group_by(Marka) %>%
+  summarise(liczba = n()) %>%
+  arrange(desc(liczba))
+```
+---
+
+### 9. Sposrod aut marki Toyota, ktory model ma najwieksza ro?nice cen gdy porownac silniki benzynowe a diesel?
+
+W tym zadaniu niestety potrafie wyfiltrowa? sobie tylko Toyoty w diesel'u i w benzynie. Nie mam pomyslu jak zrobic funkcie ktra by brala max cene dal jednego radzju paliwa i drugiego dla danego modelu i por?wnywla do siebie.
+``` {r, include=FALSE}
+auta2012 %>%
+  select(Marka,Model, Rodzaj.paliwa, Cena.w.PLN) %>%
+  filter(Marka =="Toyota") %>%
+  filter(Rodzaj.paliwa =="olej napedowy (diesel)" || Rodzaj.paliwa == "benzyna")
+```
+Nie wyswietlam co robi ten kod, poniewaz jest tutaj kilka tysiecy rekodrow.
+---
+
+### 10. Sposrod aut z silnikiem diesla wyprodukowanych w 2007 roku ktora marka jest najtansza?
+``` {r}
+auta2012 %>%
+  select(Marka, Model, Cena.w.PLN, Rodzaj.paliwa, Rok.produkcji) %>%
+  filter(Rok.produkcji==2007, Rodzaj.paliwa=="olej napedowy (diesel)") %>%
+  group_by(Marka, Model, Cena.w.PLN) %>%
+  arrange(Cena.w.PLN)
+```
+---
+
+### 11. W jakiej marce klimatyzacja jest najczesciej obecna?
+``` {r}
+auta2012 %>%
+  select(Marka, Wyposazenie.dodatkowe) %>%
+  filter(Wyposazenie.dodatkowe=="klimatyzacja") %>%
+  group_by(Marka) %>%
+  summarise(liczba = n()) %>%
+  filter(liczba==max(liczba))
+```
+---
+
+### 12. Gdy ograniczyc sie tylko do aut o cenie ponad 50 000 PLN, ktora Marka wystepuje najczesciej w zbiorze danych auta2012?
+``` {r}
+auta2012 %>%
+  select(Cena.w.PLN, Marka) %>%
+  group_by(Cena.w.PLN, Marka) %>%
+  filter(Cena.w.PLN>50000) %>%
+  group_by(Marka) %>%
+  summarise(liczba = n()) %>%
+  arrange(desc(liczba)) %>%
+  filter(liczba==max(liczba))
+```
+---
+
+### 13. Spo?r?d aut marki Toyota, kt?ry model ma najwi?kszy medianowy przebieg?
+``` {r}
+auta2012 %>%
+  filter(Marka == "Toyota") %>%
+  group_by(Model, Rodzaj.paliwa) %>%
+  summarise(Mediana_przebiegu = median(Przebieg.w.km, na.rm=TRUE)) %>%
+  arrange(desc(Mediana_przebiegu))
+```
+---
+
+### 14. Spo?r?d aut z silnikiem diesla wyprodukowanych w 2007 roku kt?ry model jest najdro?szy?
+``` {r}
+auta2012 %>%
+  filter(Rok.produkcji==2007, Rodzaj.paliwa=="olej napedowy (diesel)") %>%
+  group_by(Marka,Model) %>%
+  summarise(liczba = max(Cena.w.PLN)) %>%
+  arrange(desc(liczba))
+```
+---
+
+### 15. W jakim modelu klimatyzacja jest najcz??ciej obecna?
+``` {r}
+auta2012 %>%
+  select(Model, Wyposazenie.dodatkowe) %>%
+  filter(Wyposazenie.dodatkowe=="klimatyzacja") %>%
+  group_by(Model) %>%
+  summarise(liczba = n()) %>%
+  filter(liczba==max(liczba))
+```
+---
+
+### 16. Gdy ograniczy? si? tylko do aut o przebiegu poni?ej 50 000 km o silniku diesla, kt?ra Marka wyst?puje najcz??ciej w zbiorze danych auta2012?
+``` {r}
+auta2012 %>%
+  select(Przebieg.w.km, Marka,Rodzaj.paliwa) %>%
+  filter(Przebieg.w.km<50000,Rodzaj.paliwa=="olej napedowy (diesel)") %>%
+  group_by(Marka)%>%
+  summarise(liczba = n()) %>%
+  filter(liczba==max(liczba))
+```
+---
+
+### 17. Spo?r?d aut marki Toyota wyprodukowanych w 2007 roku, kt?ry model jest ?rednio najdro?szy?
+``` {r}
+auta2012 %>%
+  filter(Rok.produkcji==2007, Marka=="Toyota") %>%
+  group_by(Model) %>%
+  summarise(Srednia_cena = mean(Cena.w.PLN, na.rm=TRUE)) %>%
+  arrange(desc(Srednia_cena))
+```
+---
+
+### 18. Spo?r?d aut z silnikiem diesla wyprodukowanych w 2007 roku kt?ry model jest najta?szy?
+``` {r}
+auta2012 %>%
+  select(Model, Cena.w.PLN, Rodzaj.paliwa, Rok.produkcji) %>%
+  filter(Rok.produkcji==2007, Rodzaj.paliwa=="olej napedowy (diesel)") %>%
+  group_by(Model) %>%
+  arrange(Cena.w.PLN)
+```
+---
+
+### 19. Jakiego koloru auta maj? najwi?kszy medianowy przebieg?
+``` {r}
+auta2012 %>%
+  select(Kolor,Przebieg.w.km) %>%
+  group_by(Kolor) %>%
+  summarise(Przebiegg = median(Przebieg.w.km, na.rm=TRUE)) %>%
+  arrange(desc(Przebiegg))
+```
+

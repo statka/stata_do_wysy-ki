@@ -1,0 +1,191 @@
+##Zad1
+
+auta2012 %>%
+      select(Marka) %>% 
+      group_by(Marka) %>%
+      summarize(count = n()) %>% 
+      arrange(desc(count))
+
+##Zad2
+
+auta2012 %>%
+      select(Marka,Model) %>%
+      filter(Marka=='Toyota') %>%
+      group_by(Model) %>%
+      summarize(count=n()) %>%
+      arrange(desc(count))
+
+##Zad3
+
+auta2012 %>%
+      select(Rodzaj.paliwa,Rok.produkcji) %>%
+      filter(Rodzaj.paliwa == 'olej napedowy (diesel)',Rok.produkcji==2007) %>%
+      nrow
+
+##Zad4
+
+auta2012 %>%
+      select(Kolor,KM) %>%
+      group_by(Kolor) %>%
+      summarize(median_km=median(KM,na.rm=TRUE)) %>%
+      arrange(median_km)
+
+##Zad5
+
+auta2012 %>% 
+      select(Marka,Rok.produkcji) %>%
+      filter(Rok.produkcji==2007) %>%
+      group_by(Marka) %>%
+      summarize(count=n()) %>%
+      arrange(desc(count))
+
+
+##Zad6
+
+auta2012 %>% 
+      select(Marka,Model,Rok.produkcji,Cena) %>%
+      filter(Rok.produkcji<=2008,Rok.produkcji>=2007,Marka=='Toyota') %>%
+      group_by(Model,Rok.produkcji) %>%
+      summarize(mean_price=mean(Cena)) %>%
+      mutate(price_diff=mean_price-lag(mean_price,1)) %>%
+      select(Model,price_diff) %>%
+      ungroup %>%
+      na.omit %>%
+      arrange(price_diff)
+
+##Zad7
+
+auta2012 %>%
+      select(Marka,Rok.produkcji,Rodzaj.paliwa,Cena) %>%
+      filter(Rok.produkcji==2007,
+             grepl('diesel',Rodzaj.paliwa)) %>%
+      group_by(Marka) %>%
+      summarise(mean_price=mean(Cena)) %>%
+      arrange(desc(mean_price))
+
+##Zad8
+
+auta2012 %>%
+      select(Wyposazenie.dodatkowe) %>%
+      filter(grepl('klimatyzacja',Wyposazenie.dodatkowe)) %>%
+      nrow
+
+##Zad9
+
+auta2012 %>% 
+      select(Marka,KM) %>%
+      filter(KM>100) %>%
+      group_by(Marka) %>%
+      summarise(count=n()) %>%
+      arrange(desc(count))
+
+##Zad10
+
+auta2012 %>% 
+      select(Marka,Model,Rodzaj.paliwa,Cena) %>%
+      filter(Marka=='Toyota',
+             grepl('^benzyna$|diesel',Rodzaj.paliwa),Model!='inny') %>%
+      group_by(Model,Rodzaj.paliwa) %>%
+      summarise(mean_price=mean(Cena)) %>%
+      mutate(price_diff=abs(mean_price-lag(mean_price,1))) %>%
+      ungroup %>%
+      select(Model,price_diff) %>%
+      arrange(desc(price_diff))
+
+##Zad11
+
+auta2012 %>%
+      select(Marka,Rok.produkcji,Rodzaj.paliwa,Cena) %>%
+      filter(grepl('diesel',Rodzaj.paliwa),Rok.produkcji==2007) %>%
+      group_by(Marka) %>%
+      summarize(mean_price=mean(Cena)) %>%
+      arrange(mean_price)
+
+##Zad12
+
+auta2012 %>% 
+      select(Marka,Wyposazenie.dodatkowe) %>%
+      group_by(Marka) %>%
+
+      ## Tylko marki z > 100 samochodami - inaczej egzotyczne przypadki
+      ## zaciemniaja obraz
+      
+      summarize(proc_klima = ifelse(n()>100,
+                                    sum(grepl('klimatyzacja',Wyposazenie.dodatkowe))/n(),
+                                    NA)) %>%
+      arrange(desc(proc_klima))
+
+##Zad13
+
+auta2012 %>% 
+      select(Marka,Cena) %>%
+      filter(Cena>50000) %>%
+      group_by(Marka) %>%
+      summarize(count=n()) %>%
+      arrange(desc(count))
+
+##Zad14
+
+auta2012 %>%
+      select(Marka,Model,Przebieg.w.km) %>%
+      filter(Marka=='Toyota') %>%
+      group_by(Model) %>%
+      summarize(przebieg_mediana=median(Przebieg.w.km,na.rm=TRUE)) %>%
+      arrange(desc(przebieg_mediana))
+
+##Zad15
+
+auta2012 %>% 
+      select(Marka,Rok.produkcji,Rodzaj.paliwa,Model,Cena) %>%
+      filter(Rok.produkcji==2007,grepl('diesel',Rodzaj.paliwa)) %>%
+      unite(Marka_Model,c(Marka,Model),sep=' ') %>%
+      group_by(Marka_Model) %>%
+      summarize(mean_price=mean(Cena)) %>%
+      arrange(desc(mean_price))
+
+##Zad16
+
+auta2012 %>% 
+      select(Marka,Wyposazenie.dodatkowe,Model) %>%
+      unite(Marka_Model,c(Marka,Model),sep=' ') %>%
+      group_by(Marka_Model) %>%
+      summarize(proc_klima=ifelse(n()>30,
+                                  sum(grepl('klimatyzacja',Wyposazenie.dodatkowe))/n(),
+                                  NA)) %>%
+      arrange(desc(proc_klima))
+
+##Zad17
+
+auta2012 %>%
+      select(Marka,Przebieg.w.km,Rodzaj.paliwa) %>%
+      filter(Przebieg.w.km<50000,grepl('diesel',Rodzaj.paliwa)) %>%
+      group_by(Marka) %>%
+      summarize(count=n()) %>%
+      arrange(desc(count))
+
+##Zad18
+
+auta2012 %>% 
+      select(Marka,Model,Rok.produkcji,Cena) %>%
+      filter(Marka=='Toyota',Rok.produkcji==2007) %>%
+      group_by(Model) %>%
+      summarize(mean_price=mean(Cena))%>%
+      arrange(desc(mean_price))
+
+##Zad19
+
+auta2012 %>% 
+      select(Marka,Model,Rodzaj.paliwa,Rok.produkcji,Cena) %>%
+      filter(grepl('diesel',Rodzaj.paliwa),Rok.produkcji==2007) %>%
+      unite(Marka_model,c(Marka,Model),sep=' ') %>%
+      group_by(Marka_model) %>%
+      summarize(mean_price=mean(Cena))%>%
+      arrange(mean_price)
+
+##Zad20
+
+auta2012 %>%
+      select(Przebieg.w.km,Kolor) %>%
+      group_by(Kolor) %>%
+      summarize(przebieg_mediana=median(Przebieg.w.km,na.rm=TRUE)) %>%
+      arrange(desc(przebieg_mediana))

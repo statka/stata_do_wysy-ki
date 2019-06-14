@@ -1,0 +1,33 @@
+---
+title: "Laboratorium 1"
+author: "Kostiantyn Ostapeko"
+date: "March 16, 2019"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## 1. Która Marka wystepuje najczesciej w zbiorze danych auta2012?
+
+```{r}
+auta2012 %>%
+  group_by(Marka) %>%
+  summarise(liczba = n()) %>%
+  arrange(desc(liczba)) %>%
+  filter(liczba == max(liczba))
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

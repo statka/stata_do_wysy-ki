@@ -1,0 +1,173 @@
+---
+title: "Statystyka Lab 1"
+author: "Olaf Gontarczyk"
+date: "30 marca 2019"
+output: html_document
+---
+1.
+```{r}
+library(dplyr)
+library(Przewodnik)
+auta2012%>%
+  group_by(Marka)%>%
+  summarise(liczba = n())%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+```
+2
+```{r}
+auta2012%>%
+  filter(Marka == "Toyota")%>%
+  group_by(Model)%>%
+  summarise(liczba = n())%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+```
+3
+```{r}
+auta2012 %>%
+filter(Rok.produkcji == 2007) %>%
+  filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+  summarize(ile = n())
+```
+
+4
+```{r}
+auta2012 %>%
+  filter(Rok.produkcji == 2007) %>%
+  group_by(Marka) %>%
+  summarize(ile = n()) %>%
+  arrange(desc(ile))%>%
+  filter(ile==max(ile))
+```
+
+5
+```{r}
+auta2012%>%
+  filter(Rok.produkcji == 2007)%>%
+  group_by(Marka)%>%
+  summarise(liczba = n())%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+```
+6
+```{r}
+auta2012 %>%
+  filter(Rok.produkcji == 2007) %>%
+  filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+  group_by((Marka))%>%
+  summarise(liczba = max(Cena.w.PLN))%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+```
+7
+```{r}
+auta2012 %>%
+  summarise(liczba.aut.z.klimatyzacja = sum(grepl("klimatyzacja", Wyposazenie.dodatkowe)))
+```
+8
+```{r}
+auta2012 %>%
+  filter(KM > 100)%>%
+  group_by(Marka)%>%
+  summarise(liczba = n())%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+```
+9
+
+
+10
+```{r}
+auta2012 %>%
+  filter(Rok.produkcji == 2007) %>%
+  filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+  group_by((Marka))%>%
+  summarise(liczba = max(Cena.w.PLN))%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==min(liczba))
+```
+11
+```{r}
+auta2012 %>%
+  filter(Wyposazenie.dodatkowe == "klimatyzacja")%>%
+  group_by(Marka)%>%
+  summarise(liczba = n())%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+```
+12
+```{r}
+auta2012 %>%
+  filter(Cena.w.PLN > 50000)%>%
+  group_by(Marka)%>%
+  summarise(liczba = n())%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+```
+13
+```{r}
+auta2012%>%
+  filter(Marka == "Toyota") %>%
+  group_by(Model)%>%
+  summarise(medianaPrzebieg = median(Przebieg.w.km, na.rm=TRUE))%>%
+  arrange(desc(medianaPrzebieg))%>%
+  filter(medianaPrzebieg == max(medianaPrzebieg))
+```
+14
+```{r}
+auta2012 %>%
+  filter(Rok.produkcji == 2007) %>%
+  filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+  group_by((Model))%>%
+  summarise(liczba = max(Cena.w.PLN))%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+```
+15
+```{r}
+auta2012 %>%
+  filter(Wyposazenie.dodatkowe == "klimatyzacja")%>%
+  group_by(Model)%>%
+  summarise(liczba = n())%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+```
+16
+```{r}
+auta2012 %>%
+  filter(Przebieg.w.km < 50000) %>%
+  filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+  group_by((Marka))%>%
+  summarise(liczba = n())%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+```
+17
+```{r}
+auta2012 %>%
+  filter(Rok.produkcji == 2007) %>%
+  filter(Marka == "Toyota") %>%
+  group_by((Model))%>%
+  summarise(liczba = mean(Cena.w.PLN))%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+```
+18
+```{r}
+auta2012 %>%
+  filter(Przebieg.w.km < 50000) %>%
+  filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+  group_by((Marka))%>%
+  summarise(liczba = n())%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+```
+19
+```{r}
+auta2012%>%
+  group_by(Kolor)%>%
+  summarise(medianaPrzebieg = median(Przebieg.w.km, na.rm=TRUE))%>%
+  arrange(desc(medianaPrzebieg))%>%
+  filter(medianaPrzebieg == min(medianaPrzebieg))
+```

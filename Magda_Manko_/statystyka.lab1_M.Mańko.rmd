@@ -1,0 +1,371 @@
+1. Która Marka wystepuje najczesciej w zbiorze danych auta2012? 
+  auta2012 %>% 
+  group_by(Marka) %>% 
+  summarise(liczba = n())%>% 
+  arrange(desc(liczba)) 
+## # A tibble: 106 x 2 
+## Marka liczba 
+## <fct> <int> 
+## 1 Volkswagen 22826 
+## 2 Opel 19092 
+## 3 Ford 17717 
+## 4 Renault 17498 
+## 5 Audi 12851 
+## 6 Mercedes-Benz 10945 
+## 7 BMW 10126
+## 8 Peugeot 9843 
+## 9 Skoda 8457 
+## 10 Fiat 7825 
+## # ... with 96 more rows 
+2. Sposród aut marki Toyota, który model wystepuje najczesciej. 
+auta2012 %>% 
+  filter(Marka=='Toyota')%>% 
+  group_by(Marka,Model) %>% 
+  summarise(liczba = n())%>% 
+  arrange(desc(liczba)) 
+## # A tibble: 40 x 3 
+## # Groups: Marka [1] 
+## Marka Model liczba 
+## <fct> <fct> <int> 
+## 1 Toyota Yaris 1552 
+## 2 Toyota Avensis 1550 
+## 3 Toyota Corolla 1191 
+## 4 Toyota RAV-4 897 
+## 5 Toyota Corolla Verso 508 
+## 6 Toyota Auris 435 
+## 7 Toyota Land Cruiser 327 
+## 8 Toyota Aygo 154 
+## 9 Toyota Celica 146 
+## 10 Toyota Avensis Verso 105 
+## # ... with 30 more rows 
+3. Sprawdz ile jest aut z silnikiem diesla wyprodukowanych w 2007 roku? 
+  4.Jakiego koloru auta maja najmniejszy medianowy przebieg? 
+  auta2012 %>% 
+  filter(Rok.produkcji=='2007', 
+         Rodzaj.paliwa=='olej napedowy (diesel)')%>% 
+  group_by(Rok.produkcji) %>% 
+  summarise(liczba = n())%>% 
+  arrange(desc(liczba)) 
+## # A tibble: 1 x 2 
+## Rok.produkcji liczba 
+## <dbl> <int> ## 1 2007 11621
+4. Gdy ograniczyc sie tylko do aut wyprodukowanych w 2007, 
+która Marka wystepuje najczesciej w zbiorze danych auta2012? 
+  auta2012 %>% 
+  filter(Rok.produkcji==2007)%>% 
+  group_by(Rok.produkcji,Marka) %>% 
+  summarise(liczba = n())%>% arrange(desc(liczba))
+## # A tibble: 67 x 3 
+## # Groups: Rok.produkcji [1] 
+## Rok.produkcji Marka liczba 
+## <dbl> <fct> <int> 
+## 1 2007 Volkswagen 1679 
+## 2 2007 Opel 1668 
+## 3 2007 Ford 1565 
+## 4 2007 Peugeot 1087 
+## 5 2007 Renault 1075 
+## 6 2007 Skoda 950 
+## 7 2007 Audi 925 
+## 8 2007 Toyota 905 
+## 9 2007 Citroen 766 
+## 10 2007 BMW 654 
+## # ... with 57 more rows 
+5. Sposród aut marki Toyota, który model 
+najbardziej stracil na cenie pomiedzy rokiem produkcji 2007 a 2008. 
+auta2012 %>% 
+  filter(Rok.produkcji == '2007', Marka == "Toyota") %>% 
+  group_by(Model, Rodzaj.paliwa) %>% 
+  summarise(sredniaCena = mean(Cena.w.PLN), sdCena = sqrt(var(Cena.w.PLN)), 
+            medianaPrzebiegu = median(Przebieg.w.km, na.rm=TRUE),liczba = n()) 
+## # A tibble: 34 x 6 
+## # Groups: Model [20] 
+## Model Rodzaj.paliwa sredniaCena sdCena medianaPrzebiegu liczba 
+## <fct> <fct> <dbl> <dbl> <dbl> <int> 
+## 1 Auris benzyna 33264. 6113. 63000 42 
+## 2 Auris olej napedowy (di~ 33448. 5913. 105015 90 
+## 3 Avalon benzyna 69400 707. 44000 2 
+## 4 Avensis benzyna 41064. 5197. 84000 20 
+## 5 Avensis olej napedowy (di~ 40672. 5492. 143000 170 
+## 6 Avensis V~ olej napedowy (di~ 29517. 21755. 69000 2
+## 7 Aygo benzyna 16555. 5391. 53000 26
+## 8 Aygo olej napedowy (di~ 20025 1544. 62500 4 
+## 9 Camry benzyna 60393. 26524. 35000 18 
+## 10 Camry benzyna+LPG 43975 5681. 44500 4
+## # ... with 24 more rows 
+6. Sposród aut z silnikiem diesla wyprodukowanych w 2007 roku 
+która marka jest najdrozsza? 
+  auta2012 %>% 
+  filter(Rok.produkcji=='2007', Rodzaj.paliwa=='olej napedowy (diesel)')%>% 
+  group_by(Rok.produkcji,Marka,Model,Cena.w.PLN) %>% 
+  summarise(liczba = n())%>% 
+  arrange(desc(Cena.w.PLN))
+## # A tibble: 7,511 x 5 
+## # Groups: Rok.produkcji, Marka, Model [315] 
+## Rok.produkcji Marka Model Cena.w.PLN liczba 
+## <dbl> <fct> <fct> <dbl> <int> 
+## 1 2007 Volvo inny 505745. 1 
+## 2 2007 Mercedes-Benz G 320 287092 1 
+## 3 2007 Mercedes-Benz S 320 259900 1 
+## 4 2007 Mercedes-Benz G 320 256174. 1 
+## 5 2007 Mercedes-Benz GL 420 250000 1 
+## 6 2007 Mercedes-Benz CLS 320 235000 1
+## 7 2007 Mercedes-Benz S 320 235000 1 
+## 8 2007 Mercedes-Benz GL 420 229900 1 
+## 9 2007 Mercedes-Benz S 320 229900 1
+## 10 2007 Mercedes-Benz S 320 229000 1 
+## # ... with 7,501 more rows 
+7. Ile jest aut z klimatyzacja? 
+  auta2012 %>% 
+  filter(Wyposazenie.dodatkowe=='klimatyzacja')%>% 
+  group_by(Wyposazenie.dodatkowe) %>% 
+  summarise(liczba = n())%>% 
+  arrange(desc(liczba)) 
+## # A tibble: 1 x 2 
+## Wyposazenie.dodatkowe liczba 
+## <fct> <int>
+## 1 klimatyzacja 117 
+8. Gdy ograniczyc sie tylko do aut z silnikiem ponad 100 KM, 
+która Marka wystepuje najczesciej w zbiorze danych auta2012? 
+  auta2012 %>% 
+  filter(KM>100)%>% 
+  group_by(Marka) %>% 
+  summarise(liczba = n())%>% 
+  arrange(desc(liczba)) 
+## # A tibble: 82 x 2 
+## Marka liczba 
+## <fct> <int> 
+## 1 Volkswagen 13317 
+## 2 Audi 11223 
+## 3 Ford 9174 
+## 4 BMW 8934 
+## 5 Renault 8713 
+## 6 Opel 8245 
+## 7 Mercedes-Benz 7827 
+## 8 Skoda 4347 
+## 9 Peugeot 4116 
+## 10 Toyota 4028 
+## # ... with 72 more rows 
+9. Sposród aut marki Toyota, który model 
+ma najwieksza róznice cen gdy porównac silniki benzynowe a diesel? 
+10. Sposród aut z silnikiem diesla wyprodukowanych w 2007 
+roku która marka jest najtansza? 
+auta2012 %>% 
+filter(Rok.produkcji=='2007', 
+Rodzaj.paliwa=='olej napedowy
+(diesel)')%>% 
+  group_by(Marka,Cena.w.PLN) %>% 
+  summarise(sredniaCena = mean(Cena.w.PLN), 
+            liczba = n())%>% 
+  arrange(desc(liczba)) 
+## # A tibble: 5,484 x 4 
+## # Groups: Marka [44] 
+## Marka Cena.w.PLN sredniaCena liczba 
+## <fct> <dbl> <dbl> <int> 
+## 1 Volkswagen 39900 39900 70 
+## 2 Opel 23500 23500 54 
+## 3 Opel 29900 29900 54 
+## 4 Opel 28900 28900 50 
+## 5 Opel 26900 26900 43 
+## 6 Opel 25900 25900 36 
+## 7 Volkswagen 41900 41900 35 
+## 8 Volkswagen 35900 35900 34 
+## 9 Ford 29900 29900 32 
+## 10 Opel 27900 27900 32 
+## # ... with 5,474 more rows 
+11. W jakiej marce klimatyzacja jest najczesciej obecna? 
+  auta2012 %>% 
+  filter(Wyposazenie.dodatkowe=='klimatyzacja')%>% 
+  group_by(Wyposazenie.dodatkowe,Marka) %>% 
+  summarise(liczba = n())%>% 
+  arrange(desc(liczba)) 
+## # A tibble: 19 x 3 
+## # Groups: Wyposazenie.dodatkowe [1] 
+## Wyposazenie.dodatkowe Marka liczba 
+## <fct> <fct> <int> 
+## 1 klimatyzacja Renault 33 
+## 2 klimatyzacja Citroen 16 
+## 3 klimatyzacja Peugeot 12 
+## 4 klimatyzacja Ford 10 
+## 5 klimatyzacja Volkswagen 9 
+## 6 klimatyzacja Opel 8 
+## 7 klimatyzacja Skoda 7
+## 8 klimatyzacja Fiat 3 
+## 9 klimatyzacja Mercedes-Benz 3 
+## 10 klimatyzacja Seat 3 
+## 11 klimatyzacja AlfaRomeo 2 
+## 12 klimatyzacja Daewoo 2 
+## 13 klimatyzacja Mazda 2 
+## 14 klimatyzacja Nissan 2 
+## 15 klimatyzacja Chevrolet 1 
+## 16 klimatyzacja Honda 1 
+## 17 klimatyzacja Hyundai 1 
+## 18 klimatyzacja LandRover 1 
+## 19 klimatyzacja Toyota 1 
+12. Gdy ograniczyc sie tylko do aut o cenie ponad 50 000 PLN,
+która Marka wystepuje najczesciej w zbiorze danych auta2012? 
+  auta2012 %>% 
+  filter(Cena.w.PLN>50000)%>% 
+  group_by(Marka) %>%
+summarise(liczba = n())%>% 
+  arrange(desc(liczba)) 
+## # A tibble: 78 x 2 
+## Marka liczba 
+## <fct> <int> 
+## 1 Audi 4374 
+## 2 BMW 4188
+## 3 Mercedes-Benz 3528 
+## 4 Volkswagen 2652 
+## 5 Ford 1360 
+## 6 Volvo 1310 
+## 7 Skoda 1296 
+## 8 Mitsubishi 1232 
+## 9 Toyota 1135 
+## 10 Nissan 944 
+## # ... with 68 more rows 
+13. Sposród aut marki Toyota, 
+który model ma najwiekszy medianowy przebieg? 
+  auta2012 %>% 
+  filter(Marka=='Toyota')%>% 
+  group_by(Model) %>% 
+  summarise(medianaPrzebieg = median(Przebieg.w.km, na.rm=TRUE))%>% 
+  arrange(desc(medianaPrzebieg)) 
+## # A tibble: 40 x 2 
+## Model medianaPrzebieg 
+## <fct> <dbl> 
+## 1 Carina 203000 
+## 2 Previa 198000 
+## 3 Paseo 182000 
+## 4 Starlet 173500 
+## 5 Picnic 171380 
+## 6 Avensis Verso 170000
+## 7 Celica 166000 
+## 8 Tercel 154000 
+## 9 Avensis 150000 
+## 10 Supra 148000 
+## # ... with 30 more rows 
+14. Sposród aut z silnikiem diesla 
+wyprodukowanych w 2007 roku który model jest najdrozszy? 
+  auta2012 %>% 
+  filter(Rok.produkcji=='2007', 
+         Rodzaj.paliwa=='olej napedowy (diesel)')%>% 
+  group_by(Marka,Model,Cena.w.PLN) %>% 
+  summarise(liczba = n())%>% arrange(desc(Cena.w.PLN)) 
+## # A tibble: 7,511 x 4 
+## # Groups: Marka, Model [315] 
+## Marka Model Cena.w.PLN liczba
+## <fct> <fct> <dbl> <int> 
+## 1 Volvo inny 505745. 1 
+## 2 Mercedes-Benz G 320 287092 1 
+## 3 Mercedes-Benz S 320 259900 1 
+## 4 Mercedes-Benz G 320 256174. 1 
+## 5 Mercedes-Benz GL 420 250000 1 
+## 6 Mercedes-Benz CLS 320 235000 1
+## 7 Mercedes-Benz S 320 235000 1 
+## 8 Mercedes-Benz GL 420 229900 1 
+## 9 Mercedes-Benz S 320 229900 1 
+## 10 Mercedes-Benz S 320 229000 1 
+## # ... with 7,501 more rows 
+15.W jakim modelu klimatyzacja jest najczesciej obecna? 
+  auta2012 %>% 
+  filter(Wyposazenie.dodatkowe=='klimatyzacja')%>% 
+  group_by(Wyposazenie.dodatkowe,Model) %>% 
+  summarise(liczba = n())%>% 
+  arrange(desc(liczba)) 
+## # A tibble: 52 x 3 
+## # Groups: Wyposazenie.dodatkowe [1] 
+## Wyposazenie.dodatkowe Model liczba 
+## <fct> <fct> <int> 
+## 1 klimatyzacja Clio 8 
+## 2 klimatyzacja Megane 7 
+## 3 klimatyzacja Scenic 7 
+## 4 klimatyzacja C4 6 
+## 5 klimatyzacja Fabia 6 
+## 6 klimatyzacja 207 5 
+## 7 klimatyzacja Fiesta 5 
+## 8 klimatyzacja Polo 4 
+## 9 klimatyzacja Zafira 4 
+##10 klimatyzacja 307 3 
+## # ... with 42 more rows 15. 
+16.Gdy ograniczyc sie tylko do aut o przebiegu ponizej
+50 000 km o silniku diesla, która Marka wystepuje 
+najczesciej w zbiorze danych auta2012? 
+  auta2012%>% 
+  filter(Przebieg.w.km<50000)%>% 
+  group_by(Marka)%>% 
+  summarise(liczba=n())%>% 
+  arrange(desc(liczba)) 
+## # A tibble: 90 x 2 
+## Marka liczba
+## <fct> <int> 
+## 1 Volkswagen 1867 
+## 2 BMW 1743 
+## 3 Renault 1728 
+## 4 Audi 1643 
+## 5 Ford 1569 
+## 6 Mercedes-Benz 1550 
+## 7 Peugeot 1517 
+## 8 Opel 1399 
+## 9 Toyota 1214 
+##10 Fiat 992 ## # ... with 80 more rows 16.
+17.Sposród aut marki Toyota wyprodukowanych w 2007 roku,
+który model jest srednio najdrozszy? 
+  auta2012 %>% 
+  filter(Rok.produkcji=='2007')%>% 
+  group_by(Rok.produkcji,Marka,Cena.w.PLN) %>% 
+  summarise(liczba = n())%>% 
+  arrange(desc(Cena.w.PLN))
+## # A tibble: 7,618 x 4 
+## # Groups: Rok.produkcji, Marka [67] 
+## Rok.produkcji Marka Cena.w.PLN liczba 
+## <dbl> <fct> <dbl> <int> 
+## 1 2007 Mercedes-Benz 1300000 1 
+## 2 2007 Lamborghini 949000 1 
+## 3 2007 Rolls-Royce 938000 1 
+## 4 2007 Maybach 865693. 1 
+## 5 2007 Ferrari 770000 1 
+## 6 2007 Porsche 722352. 1 
+## 7 2007 Maybach 642000 1 
+## 8 2007 Ferrari 639000 1 
+## 9 2007 Mercedes-Benz 599999 1 
+## 10 2007 Ferrari 599000 1 
+## # ... with 7,608 more rows 17. 18. 
+18.Sposród aut z silnikiem diesla wyprodukowanych 
+w 2007 roku który model jest najtanszy?
+  auta2012 %>% filter(Rok.produkcji=='2007', Rodzaj.paliwa=='olej napedowy (diesel)')%>% 
+  group_by(Model,Cena.w.PLN) %>% 
+  summarise(najnizszaCena = mean(Cena.w.PLN), liczba = n())%>% 
+  arrange(desc(liczba)) 
+## # A tibble: 7,508 x 4 
+## # Groups: Model [301] 
+## Model Cena.w.PLN najnizszaCena liczba 
+## <fct> <dbl> <dbl> <int> 
+## 1 Astra 23500 23500 45
+## 2 Passat 39900 39900 42 
+## 3 Astra 28900 28900 28 
+## 4 Passat 41900 41900 26 
+## 5 Astra 29900 29900 25 
+## 6 Astra 27900 27900 23 
+## 7 Astra 26900 26900 22 
+## 8 Focus 23900 23900 20 
+## 9 Astra 25900 25900 19 
+## 10 Mondeo 39900 39900 19 
+## # ... with 7,498 more rows 19.
+19.Jakiego koloru auta maja najwiekszy medianowy przebieg?
+auta2012 %>% 
+  group_by(Kolor) %>% s
+ummarise(medianaPrzebieg = median(Przebieg.w.km, na.rm=TRUE), liczba = n())%>% 
+  arrange(desc(liczba))
+## # A tibble: 37 x 3 
+## Kolor medianaPrzebieg liczba 
+## <fct> <dbl> <int> 
+## 1 srebrny-metallic 145000 40626
+## 2 czarny-metallic 123000 29129 
+## 3 "" 135000 25997 
+## 4 niebieski-metallic 140000 12584
+## 5 szary-metallic 130000 10834
+## 6 granatowy-metallic 167000 10756 
+## 7 zielony-metallic 166000 10148
+## 8 bialy 133000 9977 
+## 9 grafitowy-metallic 130100 9481 
+## 10 czerwony 136000 7465 
+## # ... with 27 more rows
