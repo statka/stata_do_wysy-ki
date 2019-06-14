@@ -1,0 +1,86 @@
+Statystyka Zadania 2-6 Micha³ Zbróg 106648
+ 
+Zadanie 2-1
+
+
+$$ f(x) = \frac{1}{\sqrt{2\pi\sigma^2}}
+
+e^{\frac{-(x-\mu)^2}{2\sigma^2}} $$
+
+rozklad normalny = wartosc oczekiwana + odchylenie standardowe
+ 
+
+Zadanie 2-2
+
+
+		test Shapiro-Francia
+
+liczba musi byc w przedziale 5-500
+argument x = min							
+sf.test(x)
+ 
+Zadanie 2-3
+
+b = rnorm(300,-200,200)
+
+qqnorm(b)
+
+qqline(b,col="red")
+
+
+Zadanie 2-4/2-5
+
+ 
+
+height <- c(180,185,162,165,162,175,164,148,164,103,214,183,172,167,156,193,174,190,186,180,189,164)
+
+sex <- c('M','K','K','K','K','M','K','M','M','M','M','M','M','M','K','M','M','M','M','M','M','M')
+
+ 
+
+t.test(height, mu=185)
+
+ 
+
+df <- data.frame(height,sex)
+
+height.min <-min(height)
+
+height.max <- max(height)
+
+height.range <- range(height)
+
+ 
+
+test <- height.min == height.range[1]
+
+min(df$height)
+
+summary(df)
+ 
+summary(df$sex)
+
+barplot(table(df$sex), las=1, col=c('red', 'blue'))
+
+legend("topleft", c('kobiety', 'mê¿czyŸni'), fill = c('red', 'blue'))
+
+shapiro.test(df$height)
+
+install.packages('nortest')
+
+library(nortest)
+
+sf.test(df$height)
+
+kob <- c(165,172,160,164,164,173, 173)
+
+Zadanie 2-6
+
+dobre <- (60, 40, 80)
+zle <- c(10, 60, 30)
+chisq.test(cbind(dobre, zle))
+
+Data: cbind(dobre. zle)
+x-squared=12.21, df=2, p-value=0.0227
+
+ 

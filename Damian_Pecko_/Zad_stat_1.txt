@@ -1,0 +1,163 @@
+
+zad_1
+  auta2012%>%
+  group_by(Marka)%>%
+  summarise(liczba1 = n())%>%
+  arrange(desc(liczba1))%>%
+  filter(liczba1==max(liczba1))
+
+zad_2
+  auta2012%>%
+  filter(Marka=="Toyota")%>%
+  group_by(Model)%>%
+  summarise(liczba2 = n())%>%
+  arrange(desc(liczba2))%>%
+  filter(liczba2==max(liczba2))
+
+zad_3
+  auta2012%>%
+  select(Rodzaj.paliwa, Rok.produkcji)%>%
+  filter(Rodzaj.paliwa=="olej napedowy (diesel)", Rok.produkcji == "2007")%>%
+  summarise(liczba3 = n())%>%
+  arrange(desc(liczba3)) 
+
+zad_3
+  auta2012%>%
+  select(Kolor, Przebieg.w.km)%>%
+  group_by(Kolor, Przebieg.w.km)%>%
+  summarise(mediana = median(Przebieg.w.km, na.rm = TRUE))%>%
+  arrange(mediana)
+
+zad_4
+  auta2012%>%
+  select(Rok.produkcji, Marka)%>%
+  group_by(Rok.produkcji, Marka)%>%
+  filter(Rok.produkcji==2007)%>%
+  summarise(liczba4 = n())%>%
+  arrange(desc(liczba4))%>%
+  filter(liczba4==max(liczba4))
+
+zad_5
+  auta2012%>%
+  select(Marka, Rok.produkcji, Model, Cena.w.PLN)%>%
+  filter(Marka=="Toyota",Rok.produkcji>=2007, Rok.produkcji <=2008)%>%
+  group_by(Model, Rok.produkcji)%>%
+  summarise(Cena.w.PLN=mean(Cena.w.PLN), na.rm = TRUE)%>%
+  mutate(roznica=Cena.w.PLN-lag(Cena.w.PLN,1))%>%
+  select(Rok.produkcji, Model, roznica)%>%
+  na.omit%>%
+  arrange(desc(roznica))%>%
+  filter(roznica==max(roznica))
+
+zad_6
+  auta2012%>%
+  select(Marka, Model, Cena.w.PLN, Rodzaj.paliwa, Rok.produkcji)%>%
+  filter(Rok.produkcji==2007, Rodzaj.paliwa=="olej napedowy (diesel)")%>%
+  group_by(Marka, Model, Cena.w.PLN)%>%
+  arrange(desc(Cena.w.PLN))
+
+zad_7
+  auta2012%>%
+  select(Wyposazenie.dodatkowe)%>%
+  filter(Wyposazenie.dodatkowe=="klimatyzacja")%>%
+  summarise(liczba5 = n())%>%
+  arrange(desc(liczba5))
+
+zad_8
+  auta2012%>%
+  select(KM,Marka)%>%
+  filter(KM>100)%>%
+  group_by(Marka)%>%
+  summarise(liczba6 = n())%>%
+  arrange(desc(liczba6))
+         
+Zad_9
+roznicaCen <- c()
+roznicaCen <-auta2012 %>% 
+  select(Marka,Model,Rodzaj.paliwa,Cena) %>%
+  filter(Marka=='Toyota',
+         grepl('^benzyna$|diesel',Rodzaj.paliwa),Model!='inny') %>%
+  group_by(Model,Rodzaj.paliwa) %>%
+  summarise(mean_price=mean(Cena)) %>%
+  mutate(price_diff=abs(mean_price-lag(mean_price,1))) %>%
+  ungroup %>%
+  select(Model,price_diff) %>%
+  arrange((price_diff))
+
+roznicaCen[1,]
+
+zad_10
+  auta2012%>%
+  select(Marka, Model, Cena.w.PLN, Rodzaj.paliwa, Rok.produkcji)%>%
+  filter(Rok.produkcji==2007, Rodzaj.paliwa=="olej napedowy (diesel)")%>%
+  group_by(Marka, Model, Cena.w.PLN)%>%
+  arrange(Cena.w.PLN)
+
+zad_11
+  auta2012%>%
+  select(Marka, Wyposazenie.dodatkowe)%>%
+  filter(Wyposazenie.dodatkowe=="klimatyzacja")%>%
+  group_by(Marka)%>%
+  summarise(liczba7 = n())%>%
+  filter(liczba7==max(liczba7))
+
+zad_12
+  auta2012%>%
+  select(Cena.w.PLN, Marka)%>%
+  group_by(Cena.w.PLN, Marka)%>%
+  filter(Cena.w.PLN>50000)%>%
+  group_by(Marka)%>%
+  summarise(liczba8 = n())%>%
+  arrange(desc(liczba8))%>%
+  filter(liczba8==max(liczba8))
+
+zad_13
+  auta2012 %>%
+  filter(Marka == "Toyota") %>%
+  group_by(Model, Rodzaj.paliwa) %>%
+  summarise(mediana_prze = median(Przebieg.w.km, na.rm=TRUE))%>%
+  arrange(desc(mediana_prze))
+
+zad_14    
+  auta2012%>%
+  filter(Rok.produkcji==2007, Rodzaj.paliwa=="olej napedowy (diesel)")%>%
+  group_by(Marka,Model)%>%
+  summarise(num = max(Cena.w.PLN))%>%
+  arrange(desc(num))
+
+zad_15
+  auta2012%>%
+  select(Model, Wyposazenie.dodatkowe)%>%
+  filter(Wyposazenie.dodatkowe=="klimatyzacja")%>%
+  group_by(Model)%>%
+  summarise(num2 = n())%>%
+  filter(num2==max(num2))
+
+zad_16
+  auta2012%>%
+  select(Przebieg.w.km, Marka,Rodzaj.paliwa)%>%
+  filter(Przebieg.w.km<50000,Rodzaj.paliwa=="olej napedowy (diesel)")%>%
+  group_by(Marka)%>%
+  summarise(num3 = n())%>%
+  filter(num3==max(num3))
+
+zad_17
+  auta2012%>%
+  filter(Rok.produkcji==2007, Marka=="Toyota")%>%
+  group_by(Model)%>%
+  summarise(srednia = mean(Cena.w.PLN, na.rm=TRUE))%>%
+  arrange(desc(srednia))
+
+zad_18
+  auta2012%>%
+  select(Model, Cena.w.PLN, Rodzaj.paliwa, Rok.produkcji)%>%
+  filter(Rok.produkcji==2007, Rodzaj.paliwa=="olej napedowy (diesel)")%>%
+  group_by(Model)%>%
+  arrange(Cena.w.PLN)
+
+zad_19
+  auta2012%>%
+  select(Kolor,Przebieg.w.km)%>%
+  group_by(Kolor)%>%
+  summarise(wyn = median(Przebieg.w.km, na.rm=TRUE))%>%
+  arrange(desc(wyn))

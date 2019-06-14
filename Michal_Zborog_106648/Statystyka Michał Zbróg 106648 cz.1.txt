@@ -1,0 +1,157 @@
+Statystyka Zadania 1-20 Micha³ Zbróg 106648
+
+
+
+Zadanie 1-1
+
+auta2012%>%
+  group_by(Marka)%>%
+  summarise(liczba = i())%>%
+   filter(licz==max(licz))
+  arrange(desc(licz))%>%
+  filter(licz==max(licz))
+
+Zadanie 1-2
+
+auta2012%>%
+  filter(Marka == "Toyota")%>%
+  group_by(Model)%>%
+  summarise(licz = i())%>%
+  arrange(desc(licz))%>%
+  filter(licz==max(licz))
+
+
+Zadanie 1-3
+
+auta2012 %>%
+filter(Rok.produkcji == 2007) %>%
+  filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+  summarize(ile = i())
+
+Zadanie 1-4
+
+auta2012 %>%
+  filter(Rok.produkcji == 2007) %>%
+  group_by(Marka) %>%
+  summarize(ile = i()) %>%
+  arrange(desc(ile))%>%
+  filter(ile==max(ile))
+
+Zadanie 1-5
+
+auta2012%>%
+  filter(Rok.produkcji == 2007)%>%
+  group_by(Marka)%>%
+  summarise(licz = i())%>%
+  arrange(desc(licz))%>%
+  filter(licz==max(licz))
+
+Zadanie 1-6
+
+auta2012 %>%
+  filter(Rok.produkcji == 2007) %>%
+  filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+  group_by((Marka))%>%
+  filter(liczba==max(liczba))
+
+
+Zadanie 1-9
+
+auta2012 %>%
+  filter(KM > 100)%>%
+  group_by(Marka)%>%
+  summarise(liczba = i())%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+
+Zadanie 1-10
+
+auta2012 %>%
+  filter(Rok.produkcji == 2007) %>%
+  filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+  group_by((Marka))%>%
+  summarise(liczba = max(Cena.w.PLN))%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==min(liczba))
+
+Zadanie 1-11
+
+auta2012 %>%
+  filter(Wyposazenie.dodatkowe == "klimatyzacja")%>%
+  group_by(Marka)%>%
+  summarise(liczba = i())%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+
+Zadanie 1-12
+auta2012 %>%
+  filter(Cena.w.PLN > 50000)%>%
+  group_by(Marka)%>%
+  summarise(liczba = i())%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+
+Zadanie 1-13
+auta2012%>%
+  filter(Marka == "Toyota") %>%
+  group_by(Model)%>
+  summarise(medianaPrzebieg = median(Przebieg.w.km, na.rm=TRUE))%>%
+  
+  filter(medianaPrzebieg == max(medianaPrzebieg))
+
+Zadanie 1-14
+
+auta2012 %>%
+  filter(Rok.produkcji == 2007) %>%
+  filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+  group_by((Model))%>%
+  summarise(liczba = max(Cena.w.PLN))%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+
+Zadanie 1-15
+
+auta2012 %>%
+  filter(Wyposazenie.dodatkowe == "klimatyzacja")%>%
+  group_by(Model)%>%
+  summarise(liczba = i())%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+
+Zadanie 1-16
+
+auta2012 %>%
+  filter(Przebieg.w.km < 50000) %>%
+  filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+  group_by((Marka))%>%
+  summarise(liczba = i())%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+        
+Zadanie 1-17
+auta2012 %>%
+  filter(Rok.produkcji == 2007) %>%
+  filter(Marka == "Toyota") %>%
+  group_by((Model))%>%
+  summarise(liczba = mean(Cena.w.PLN))%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+
+Zadanie 1-18
+
+auta2012 %>%
+  filter(Przebieg.w.km < 50000) %>%
+  filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>%
+  group_by((Marka))%>%
+  summarise(liczba = i())%>%
+  arrange(desc(liczba))%>%
+  filter(liczba==max(liczba))
+
+Zadanie 1-19
+
+auta2012%>%
+  summarise(medianaPrzebieg = median(Przebieg.w.km, na.rm=TRUE))%>%
+  arrange(desc(medianaPrzebieg))%>%
+  filter(medianaPrzebieg == min(medianaPrzebieg))
+            
+          
