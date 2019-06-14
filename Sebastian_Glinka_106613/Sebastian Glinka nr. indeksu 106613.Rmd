@@ -1,0 +1,286 @@
+---
+title: "Statystyka"
+author: "Sebastian Glinka"
+date: "30 marca 2019"
+output: html_document
+---
+
+Sebastian Glinka 
+nr indeksu 106613
+
+
+> library(PogromcyDanych)
+£adowanie wymaganego pakietu: dplyr
+
+Do³¹czanie pakietu: ‘dplyr’
+
+Nastêpuj¹ce obiekty zosta³y zakryte z ‘package:stats’:
+
+    filter, lag
+
+Nastêpuj¹ce obiekty zosta³y zakryte z ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+£adowanie wymaganego pakietu: SmarterPoland
+£adowanie wymaganego pakietu: ggplot2
+Find out what's changed in ggplot2 at
+https://github.com/tidyverse/ggplot2/releases.
+£adowanie wymaganego pakietu: httr
+£adowanie wymaganego pakietu: htmltools
+Warning messages:
+1: pakiet ‘PogromcyDanych’ zosta³ zbudowany w wersji R 3.5.3 
+2: pakiet ‘dplyr’ zosta³ zbudowany w wersji R 3.5.3 
+3: pakiet ‘SmarterPoland’ zosta³ zbudowany w wersji R 3.5.3 
+4: pakiet ‘ggplot2’ zosta³ zbudowany w wersji R 3.5.3 
+5: pakiet ‘httr’ zosta³ zbudowany w wersji R 3.5.3 
+6: pakiet ‘htmltools’ zosta³ zbudowany w wersji R 3.5.3 
+Zadanie 1.
+> auta2012 %>%
++     group_by(Marka) %>%
++     summarise(liczba = n())%>%
++     arrange(desc(liczba))
+
+# A tibble: 106 x 2
+   Marka         liczba
+   <fct>          <int>
+ 1 Volkswagen     22826
+ 2 Opel           19092
+ 3 Ford           17717
+ 4 Renault        17498
+ 5 Audi           12851
+ 6 Mercedes-Benz  10945
+ 7 BMW            10126
+ 8 Peugeot         9843
+ 9 Skoda           8457
+10 Fiat            7825
+# ... with 96 more rows
+Zadanie 2.
+> auta2012 %>%
++     filter(Marka=='Toyota')%>%
++     group_by(Marka,Model) %>%
++     summarise(liczba = n())%>%
++     arrange(desc(liczba))
+
+# A tibble: 40 x 3
+# Groups:   Marka [1]
+   Marka  Model         liczba
+   <fct>  <fct>          <int>
+ 1 Toyota Yaris           1552
+ 2 Toyota Avensis         1550
+ 3 Toyota Corolla         1191
+ 4 Toyota RAV-4            897
+ 5 Toyota Corolla Verso    508
+ 6 Toyota Auris            435
+ 7 Toyota Land Cruiser     327
+ 8 Toyota Aygo             154
+ 9 Toyota Celica           146
+10 Toyota Avensis Verso    105
+# ... with 30 more rows
+
+Zadanie 3.
+> auta2012 %>%
++     filter(Rok.produkcji=='2007', Rodzaj.paliwa=='olej napedowy (diesel)')%>%
++     group_by(Rok.produkcji) %>%
++     summarise(liczba = n())%>%
++     arrange(desc(liczba))
+
+# A tibble: 1 x 2
+  Rok.produkcji liczba
+          <dbl>  <int>
+1          2007  11621
+Zadanie 4.
+> auta2012 %>%
++     group_by(Kolor) %>%
++     summarise(medianaPrzebieg = median(Przebieg.w.km, na.rm=TRUE),
++               liczba = n())%>%
++     arrange(desc(liczba))
+
+# A tibble: 37 x 3
+   Kolor              medianaPrzebieg liczba
+   <fct>                        <dbl>  <int>
+ 1 srebrny-metallic            145000  40626
+ 2 czarny-metallic             123000  29129
+ 3 ""                          135000  25997
+ 4 niebieski-metallic          140000  12584
+ 5 szary-metallic              130000  10834
+ 6 granatowy-metallic          167000  10756
+ 7 zielony-metallic            166000  10148
+ 8 bialy                       133000   9977
+ 9 grafitowy-metallic          130100   9481
+10 czerwony                    136000   7465
+# ... with 27 more rows
+Zadanie 5.
+> auta2012 %>%
++     filter(Rok.produkcji==2007)%>%
++     group_by(Rok.produkcji,Marka) %>%
++     summarise(liczba = n())%>%
++     arrange(desc(liczba))
+
+# A tibble: 67 x 3
+# Groups:   Rok.produkcji [1]
+   Rok.produkcji Marka      liczba
+           <dbl> <fct>       <int>
+ 1          2007 Volkswagen   1679
+ 2          2007 Opel         1668
+ 3          2007 Ford         1565
+ 4          2007 Peugeot      1087
+ 5          2007 Renault      1075
+ 6          2007 Skoda         950
+ 7          2007 Audi          925
+ 8          2007 Toyota        905
+ 9          2007 Citroen       766
+10          2007 BMW           654
+# ... with 57 more rows
+Zadanie 6.
+> auta2012 %>%
++     filter(Rok.produkcji == '2007', Marka == "Toyota") %>%
++     group_by(Model, Rodzaj.paliwa) %>%
++     summarise(sredniaCena = mean(Cena.w.PLN),
++               sdCena = sqrt(var(Cena.w.PLN)),
++               medianaPrzebiegu = median(Przebieg.w.km, na.rm=TRUE),liczba = n())
+
+# A tibble: 34 x 6
+# Groups:   Model [20]
+   Model Rodzaj.paliwa sredniaCena sdCena medianaPrzebiegu
+   <fct> <fct>               <dbl>  <dbl>            <dbl>
+ 1 Auris benzyna            33264.  6113.            63000
+ 2 Auris olej napedow~      33448.  5913.           105015
+ 3 Aval~ benzyna            69400    707.            44000
+ 4 Aven~ benzyna            41064.  5197.            84000
+ 5 Aven~ olej napedow~      40672.  5492.           143000
+ 6 Aven~ olej napedow~      29517. 21755.            69000
+ 7 Aygo  benzyna            16555.  5391.            53000
+ 8 Aygo  olej napedow~      20025   1544.            62500
+ 9 Camry benzyna            60393. 26524.            35000
+10 Camry benzyna+LPG        43975   5681.            44500
+# ... with 24 more rows, and 1 more variable: liczba <int>
+Zadanie 7.
+> auta2012 %>%
++     filter(Rok.produkcji=='2007', Rodzaj.paliwa=='olej napedowy (diesel)')%>%
++     group_by(Rok.produkcji,Marka,Model,Cena.w.PLN) %>%
++     summarise(liczba = n())%>%
++     arrange(desc(Cena.w.PLN))
+
+# A tibble: 7,511 x 5
+# Groups:   Rok.produkcji, Marka, Model [315]
+   Rok.produkcji Marka         Model   Cena.w.PLN liczba
+           <dbl> <fct>         <fct>        <dbl>  <int>
+ 1          2007 Volvo         inny       505745.      1
+ 2          2007 Mercedes-Benz G 320      287092       1
+ 3          2007 Mercedes-Benz S 320      259900       1
+ 4          2007 Mercedes-Benz G 320      256174.      1
+ 5          2007 Mercedes-Benz GL 420     250000       1
+ 6          2007 Mercedes-Benz CLS 320    235000       1
+ 7          2007 Mercedes-Benz S 320      235000       1
+ 8          2007 Mercedes-Benz GL 420     229900       1
+ 9          2007 Mercedes-Benz S 320      229900       1
+10          2007 Mercedes-Benz S 320      229000       1
+# ... with 7,501 more rows
+Zadanie 8.
+> auta2012 %>%
++     filter(Wyposazenie.dodatkowe=='klimatyzacja')%>%
++     group_by(Wyposazenie.dodatkowe) %>%
++     summarise(liczba = n())%>%
++     arrange(desc(liczba))
+
+# A tibble: 1 x 2
+  Wyposazenie.dodatkowe liczba
+  <fct>                  <int>
+1 klimatyzacja             117
+Zadanie 9.
+> auta2012 %>%
++     filter(KM>100)%>%
++     group_by(Marka) %>%
++     summarise(liczba = n())%>%
++     arrange(desc(liczba))
+
+# A tibble: 82 x 2
+   Marka         liczba
+   <fct>          <int>
+ 1 Volkswagen     13317
+ 2 Audi           11223
+ 3 Ford            9174
+ 4 BMW             8934
+ 5 Renault         8713
+ 6 Opel            8245
+ 7 Mercedes-Benz   7827
+ 8 Skoda           4347
+ 9 Peugeot         4116
+10 Toyota          4028
+# ... with 72 more rows
+Zadanie 10.
+> auta2012 %>%
++     filter(Rok.produkcji=='2007', Rodzaj.paliwa=='olej napedowy (diesel)')%>%
++     group_by(Marka,Cena.w.PLN) %>%
++     summarise(sredniaCena = mean(Cena.w.PLN)
++               ,liczba = n())%>%
++     arrange(desc(liczba))
+
+# A tibble: 5,484 x 4
+# Groups:   Marka [44]
+   Marka      Cena.w.PLN sredniaCena liczba
+   <fct>           <dbl>       <dbl>  <int>
+ 1 Volkswagen      39900       39900     70
+ 2 Opel            23500       23500     54
+ 3 Opel            29900       29900     54
+ 4 Opel            28900       28900     50
+ 5 Opel            26900       26900     43
+ 6 Opel            25900       25900     36
+ 7 Volkswagen      41900       41900     35
+ 8 Volkswagen      35900       35900     34
+ 9 Ford            29900       29900     32
+10 Opel            27900       27900     32
+# ... with 5,474 more rows
+Zadanie 11.
+> auta2012 %>%
++     filter(Wyposazenie.dodatkowe=='klimatyzacja')%>%
++     group_by(Wyposazenie.dodatkowe,Marka) %>%
++     summarise(liczba = n())%>%
++     arrange(desc(liczba))
+
+# A tibble: 19 x 3
+# Groups:   Wyposazenie.dodatkowe [1]
+   Wyposazenie.dodatkowe Marka         liczba
+   <fct>                 <fct>          <int>
+ 1 klimatyzacja          Renault           33
+ 2 klimatyzacja          Citroen           16
+ 3 klimatyzacja          Peugeot           12
+ 4 klimatyzacja          Ford              10
+ 5 klimatyzacja          Volkswagen         9
+ 6 klimatyzacja          Opel               8
+ 7 klimatyzacja          Skoda              7
+ 8 klimatyzacja          Fiat               3
+ 9 klimatyzacja          Mercedes-Benz      3
+10 klimatyzacja          Seat               3
+11 klimatyzacja          AlfaRomeo          2
+12 klimatyzacja          Daewoo             2
+13 klimatyzacja          Mazda              2
+14 klimatyzacja          Nissan             2
+15 klimatyzacja          Chevrolet          1
+16 klimatyzacja          Honda              1
+17 klimatyzacja          Hyundai            1
+18 klimatyzacja          LandRover          1
+19 klimatyzacja          Toyota             1
+Zadanie 12.
+> auta2012 %>%
++     filter(Cena.w.PLN>50000)%>%
++     group_by(Marka) %>%
++     summarise(liczba = n())%>%
++     arrange(desc(liczba))
+
+# A tibble: 78 x 2
+   Marka         liczba
+   <fct>          <int>
+ 1 Audi            4374
+ 2 BMW             4188
+ 3 Mercedes-Benz   3528
+ 4 Volkswagen      2652
+ 5 Ford            1360
+ 6 Volvo           1310
+ 7 Skoda           1296
+ 8 Mitsubishi      1232
+ 9 Toyota          1135
+10 Nissan           944
+# ... with 68 more rows
+

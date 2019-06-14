@@ -1,0 +1,58 @@
+---
+title: "Statystyka - lab3"
+author: "Joanna Lubańska"
+date: "24.05.2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+```{r setup, include=FALSE, error=TRUE}
+knitr::opts_chunk$set(echo = FALSE)
+library("nortest")
+```
+
+///Zadanie 1///
+
+Do określenia rozkładu normalnego wymagane są odchylenie standardowe oraz wartość oczekiwana.
+
+///Zadanie 2///
+
+Innym testem na normalność rozkładu jest test Shapiro-Francia. Minimalną ilością wymaganych danych jest jeden argument "x", będący wektorem danych z przedziału liczbowego [5;500]
+
+sf.test(x)
+
+
+///Zadanie 3///
+
+```{r}
+b = rnorm(300,-200,200)
+qqnorm(b)
+qqline(b,col="red")
+```
+
+///Zadanie 4///
+
+Wykonujemy test T-Studenta dla ramki z danymi
+```{r}
+t.test(ramka$wzrost,mu=180)
+```
+t = 0.20459, df = 21, p-value = 0.8399
+
+///Zadanie 5///
+
+Tworzymy dwa wektory ze wzrostem obu płci, a następnie porównujemy dowolnym testem na dwa argumenty
+
+```{r}
+wzrost_m=c(188,175,178,184,203,200,193,182,187,183,194,180,180,187,179,180)
+wzrost_k=c(165,172,160,164,164,173)
+
+chisq.test(cbind(wzrost_k,wzrost_m))
+```
+
+///Zadanie 6///
+
+```{r}
+dobre <- c(40,80,60)
+zle <- c(10, 60,20)
+chisq.test(cbind(dobre, zle))
+```

@@ -1,0 +1,93 @@
+---
+title: "Laboratorium 3"
+author: "Olaf Gontarczyk"
+date: "14/06/2019"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library("nortest")
+library("ggplot2")
+```
+#
+<p><b>1. Which parameters are required to determine the normal distribution?</b></p>
+  - The expectation of destribution (median and mode). And decides about the curve shifting.
+  - The variance. This parameter determines the "slenderness" of the curve.
+  $$N(\mu, \sigma)$$
+  $$P(X \le x) = \int_{-\infty}^{+\infty} \frac{1}{\sigma\sqrt{2\pi}}e^{\frac{-(x - \mu)^2}{2\sigma^2}}$$
+<p></p>
+
+#
+<p><b>2. Find another test for the normality of the distribution. What is the minimum amount of data you need for the test you have chosen?
+</b></p>
+<p>For the test I need more than 7 numbers</p>
+```{r echo = TRUE}
+data <- runif(8, 95.1, 101.5)
+```
+
+```{r echo = TRUE}
+cvm.test(data)
+```
+
+```{r echo = TRUE}
+ad.test(data)
+```
+
+#
+<p><b>3. Generate a 300 element vector whic allow you reject the null hypotesis for the Shapiro-Wilk test</b></p>
+```{r echo = TRUE}
+data <- runif(300)
+```
+```{r echo = TRUE}
+shapiro.test(data)
+```
+<p>$$p - value < 0.05$$</p>
+<p>So, reject null hypotesis</p>
+```{r echo = FALSE}
+qqnorm(data)
+qqline(data, col = "red")
+```
+
+
+#
+<p><b>4. For the height of your group, verify is the average height is equal to the average height in the Poland?</b></p>
+```{r echo = FALSE}
+mHeight <- sample(170:207, 15)
+fHeight <- sample(140:180, 10)
+height <- c(mHeight, fHeight)
+gender <- c(rep("m", 15), rep("f", 10))
+myFrame <- data.frame(height <- height, gender <- gender)
+t.test(myFrame$height, mu=180)
+
+```
+<p><i>I lost the data from the laboratory, so use random height.</i></p>
+
+#
+<p><b>5. Verify is the average height in the group differs depending on the gender?</b></p>
+```{r echo = FALSE}
+height <- sample(140:207, 30)
+gender <- c()
+for(i in height)
+{
+  if(i < 170)
+  {
+    gender = c(gender, "f")
+  }
+  else
+  {
+    gender = c(gender, "m")
+  }
+}
+myFrame <- data.frame(height <- height, gender <- gender)
+```
+```{r echo = TRUE}
+var_f <- with(myFrame, height[gender == "f"])
+var_m <- with(myFrame, height[gender == "m"])
+t.test(var_f, var_m)
+```
+<p><i>Yeah, a little bit.</i></p>
+```{r echo = FALSE}
+ggplot(myFrame, aes(x = height, fill = gender)) + geom_density()
+```
+

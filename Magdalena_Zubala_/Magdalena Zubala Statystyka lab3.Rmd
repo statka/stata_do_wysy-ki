@@ -1,0 +1,90 @@
+---
+title: "STATYSTYKA LABORATORIUM 3"
+author: "MAGDALENA ZUBALA"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+###ZADANIE 1
+
+Do okreœlenia rozk³adu normalnego wymagane s¹ paramery: 
+- wartoœæ oczekiwana 
+- odchylenie standardowe
+
+$$ f(x) = \frac{1}{\sqrt{2\pi\sigma^2}}
+e^{\frac{-(x-\mu)^2}{2\sigma^2}} $$
+
+###ZADANIE 2
+
+Jednym z wielu testów na normalnoœæ rozk³adu jest Test Andersona-Darlinga
+
+Jest on oparty o wa¿on¹ odleg³oœæ Cramera von Misesa pomiêdzy dystrybuantami empiryczn¹ Fn i teoretyczn¹ F z wagami odpowiadaj¹cymi odwrotnoœci wariancji dystrybuanty empirycznej.
+
+W programie R test ten jest zaimplementowany w funkcji:
+
+> ad.test{nortest}
+
+    ##
+    ## Anderson-Darling normality test
+    ##
+    ##data: x
+    ##A = 0.4141, p-value = 0.3301
+
+###ZADANIE 3
+
+Poni¿ej przedstawiony jest kod na 300 elementowy wektor danych, który odrzuca hipotezê zerow¹ dla testu Shapiro-Wilka.
+
+    wektor = rnorm(300,-200,200)
+    qqnorm(wektor)
+    qqline(wektor,col="red")
+    
+```{r pressure, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("Rplot.png")
+```
+
+
+###ZADANIE 4 i 5
+
+Poni¿szy kod weryfikuje czy œredni wzrost grupy studentów jest równy œredniemu wzrostowi w Polsce (180 cm) oraz czy œredni wzrost ró¿ni siê w zale¿noœci od p³ci.
+
+    wzrost <- c(188,165,172,160,164,175,164,178,184,203,200,193,182,187,173,183,194,180,180,187,179,180)
+    p³eæ <- c('M','K','K','K','K','M','K','M','M','M','M','M','M','M','K','M','M','M','M','M','M','M')
+
+    t.test(wzrost, mu=180)
+
+    df <- data.frame(wzrost,p³eæ)
+    wzrost.min <-min(wzrost)
+    wzrost.max <- max(wzrost)
+    wzrost.range <- range(wzrost)
+
+    test <- wzrost.min == wzrost.range[1]
+    min(df$wzrost)
+    summary(df)
+
+    hist(df$wzrost)
+    boxplot(df$wzrost)
+
+    summary(df$p³eæ)
+    barplot(table(df$p³eæ), las=1, col=c('red', 'blue'))
+    legend("topleft", c('kobiety', 'mê¿czyŸni'), fill = c('red', 'blue'))
+
+    shapiro.test(df$wzrost)
+    install.packages('nortest')
+    library(nortest)
+    sf.test(df$wzrost)
+
+    k <- c(165,172,160,164,164,173, 173)
+    m <- c(188,175,178,184,203,200,193,182,187,183,194,180,180,187,179,180)
+    chisq.test(cbind(k,m))
+    
+    
+###ZADANIE 6
+
+Poni¿szy kod pokazuje, ¿e jakoœæ produkcji na poziomie równym 0.05 nie zale¿y od metody.
+
+    dobrajakosc <- c(40, 80, 60)
+    zlajakosc <- c(10, 60, 20)
+    chisq.est(cbind(dobrajakosc, zlajakosc))

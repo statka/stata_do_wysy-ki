@@ -1,0 +1,77 @@
+---
+title: "Zadania na zaliczenie"
+author: "Przemek Turalski"
+date: "20.05.2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Zadanie 1
+
+Parametry wymagane do okreslenia rozkladu normalnego
+to wartosc oczekiwana oraz odchylenie standardowe.
+
+$$ f(x) = \frac{1}{\sqrt{2\pi\sigma^2}}
+e^{\frac{-(x-\mu)^2}{2\sigma^2}} $$
+
+Zadanie 2
+
+Innym testem na normalnosc rozkladu jest test Cramera von Misesa
+
+cvm.test(x)
+
+Ten test jest oparty o odleglosc Cramera von Misesa pomiedzy dystrybuantami empiryczna $F_n$ i teoretyczna $F$
+
+Zadanie 3
+```{r}
+b = rnorm(300, -200, 200)
+qqnorm(b)
+qqline(b, col="red")
+```
+
+
+Zadanie 4 i 5
+```{r}
+height <- c(188,165,172,160,164,175,164,178,184,203,200,193,182,187,173,183,194,180,180,187,179,180)
+sex <- c('M','K','K','K','K','M','K','M','M','M','M','M','M','M','K','M','M','M','M','M','M','M')
+
+t.test(height, mu=180)
+
+df <- data.frame(height,sex)
+height.min <-min(height)
+height.max <- max(height)
+height.range <- range(height)
+
+test <- height.min == height.range[1]
+min(df$height)
+summary(df)
+
+hist(df$height)
+boxplot(df$height)
+
+summary(df$sex)
+barplot(table(df$sex), las=1, col=c('red', 'blue'))
+legend("topleft", c('kobiety', 'meczyzni'), fill = c('red', 'blue'))
+```
+
+
+
+install.packages('nortest')
+library(nortest)
+shapiro.test(df$height)
+
+sf.test(df$height)
+```{r}
+
+kob <- c(165,172,160,164,164,173, 173)
+men <- c(188,175,178,184,203,200,193,182,187,183,194,180,180,187,179,180)
+chisq.test(cbind(kob,men))
+```
+Zadanie 6
+```{r}
+ok <- c(40, 80, 60)
+bad <- c(10, 60, 20)
+chisq.test(cbind(ok, bad))
+```
