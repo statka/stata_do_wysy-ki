@@ -1,0 +1,186 @@
+---
+
+output:
+  html_document: default
+  pdf_document: default
+---
+```
+install.packages("dplyr")
+library(dplyr)
+
+```
+
+# Zad 1
+
+#### Która Marka występuje najczęściej w zbiorze danych auta2012?
+
+```{r}
+Zad1 <- auta2012 %>% group_by(Marka) %>% summarise(liczba = n()) %>% arrange(-liczba)
+head(Zad1)
+```
+
+#Zad 2
+
+#### Spośród aut marki Toyota, który model występuje najczęściej.
+
+```{r}
+Zad2 <- auta2012 %>% group_by(Model) %>% filter(Marka =="Toyota") %>% summarise(liczba = n()) %>% arrange(-liczba)
+head(Zad2)
+```
+
+#Zad 3
+
+#### Sprawdź ile jest aut z silnikiem diesla wyprodukowanych w 2007 roku? 
+
+```{r}
+Zad3 <- auta2012 %>% filter(Rok.produkcji == 2007) %>% summarise(liczba.aut.z.diesel = sum(grepl("diesel", Rodzaj.paliwa)))
+head(Zad3)
+```
+
+#Zad 4
+
+#### Gdy ograniczyć się tylko do aut wyprodukowanych w 2007, która Marka występuje najczęściej w zbiorze danych auta2012?
+
+```{r}
+Zad4 <- auta2012 %>% filter(Rok.produkcji ==2007) %>% group_by(Marka) %>% summarise(liczba = n()) %>% arrange(-liczba)
+head(Zad4)
+```
+
+
+#Zad 6
+
+#### Spośród aut z silnikiem diesla wyprodukowanych w 2007 roku która marka jest najdroższa?
+
+```{r}
+Zad6 <- select(auta2012, Marka, Rok.produkcji, Rodzaj.paliwa, Cena.w.PLN) %>% group_by(Marka) %>% filter(Rok.produkcji == 2007, Rodzaj.paliwa == "olej napedowy (diesel)") %>% arrange(-Cena.w.PLN)
+head(Zad6)
+```
+
+#Zad 7
+
+#### Ile jest aut z klimatyzacją?
+
+```{r}
+Zad7 <- auta2012 %>% summarise(sum(grepl("klimatyzacja", Wyposazenie.dodatkowe)), liczba.aut = n())
+head(Zad7)
+```
+
+#Zad 8
+
+#### Gdy ograniczyć się tylko do aut z silnikiem ponad 100 KM, która Marka występuje najczęściej w zbiorze danych auta2012?
+
+```{r}
+Zad8 <- select(auta2012, Marka, Model, KM) %>% filter(KM > 100) %>% group_by(Marka) %>% summarise(liczba.aut = n()) %>% arrange(-liczba.aut)
+head(Zad8)
+```
+
+#Zad 8
+
+#### Gdy ograniczyć się tylko do aut z silnikiem ponad 100 KM, która Marka występuje najczęściej w zbiorze danych auta2012?
+
+```{r}
+Zad8 <- select(auta2012, Marka, Model, KM) %>% filter(KM > 100) %>% group_by(Marka) %>% summarise(liczba.aut = n()) %>% arrange(-liczba.aut)
+head(Zad8)
+```
+
+
+#Zad 10
+
+#### Gdy ograniczyć się tylko do aut z silnikiem ponad 100 KM, która Marka występuje najczęściej w zbiorze danych auta2012?
+
+```{r}
+Zad10 <- select(auta2012, Marka, Rok.produkcji, Rodzaj.paliwa, Cena.w.PLN) %>% group_by(Marka) %>% filter(Rok.produkcji == 2007, Rodzaj.paliwa == "olej napedowy (diesel)") %>% arrange(Cena.w.PLN)
+head(Zad10)
+```
+
+#Zad 11
+
+#### W jakiej marce klimatyzacja jest najczęściej obecna?
+
+```{r}
+Zad11 <- auta2012 %>% group_by(Marka) %>% summarise(liczba.aut.z.klimatyzacja = sum(grepl("klimatyzacja", Wyposazenie.dodatkowe))) %>% arrange(-liczba.aut.z.klimatyzacja)
+head(Zad11)
+```
+
+
+
+
+#Zad 12
+
+#### Gdy ograniczyć się tylko do aut o cenie ponad 50 000 PLN, która Marka występuje najczęściej w zbiorze danych auta2012?
+
+```{r}
+Zad12 <- select(auta2012, Marka, Model, Rok.produkcji, Cena.w.PLN) %>% filter(Cena.w.PLN >50000) %>% filter(Rok.produkcji == 2012) %>% group_by(Marka) %>% summarise(liczba.aut = n()) %>% arrange(-liczba.aut)
+head(Zad12)
+```
+
+#Zad 13
+
+#### Spośród aut marki Toyota, który model ma największy medianowy przebieg?
+
+```{r}
+Zad13 <- auta2012 %>% filter(Marka == "Toyota") %>% group_by(Model) %>% summarise(medianaPrzebiegu = median(Przebieg.w.km, na.rm = TRUE)) %>% arrange(-medianaPrzebiegu)
+head(Zad13)
+```
+
+
+#Zad 14
+
+#### Spośród aut z silnikiem diesla wyprodukowanych w 2007 roku który model jest najdroższy?
+
+```{r}
+Zad14 <- select(auta2012, Marka, Model, Rok.produkcji, Rodzaj.paliwa, Cena.w.PLN) %>% filter(Rok.produkcji == 2007)  %>% filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>% group_by(Model) %>% arrange(-Cena.w.PLN)
+head(Zad14)
+```
+
+#Zad 15
+
+#### W jakim modelu klimatyzacja jest najczęściej obecna?
+
+```{r}
+Zad15 <- auta2012 %>% group_by(Marka) %>% summarise(liczba.aut.z.klimatyzacja = sum(grepl("klimatyzacja", Wyposazenie.dodatkowe))) %>% arrange(-liczba.aut.z.klimatyzacja)
+head(Zad15)
+```
+
+
+
+
+#Zad 16
+
+#### Gdy ograniczyć się tylko do aut o przebiegu poniżej 50 000 km o silniku diesla, która Marka występuje najczęściej w zbiorze danych auta2012?
+
+```{r}
+Zad16 <- auta2012 %>% filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>% filter(Przebieg.w.km < 50000) %>% group_by(Marka) %>% summarise(liczba.aut = n()) %>% arrange(-liczba.aut)
+head(Zad16)
+```
+
+
+
+#Zad 17
+
+#### Spośród aut marki Toyota wyprodukowanych w 2007 roku, który model jest średnio najdroższy?
+
+```{r}
+Zad17 <- auta2012 %>% filter(Marka =="Toyota") %>% filter(Rok.produkcji == "2007") %>% group_by(Model) %>% summarise(SredniaCena = mean(Cena.w.PLN)) %>% arrange(-SredniaCena)
+head(Zad17)
+```
+
+
+#Zad 18
+
+#### Spośród aut z silnikiem diesla wyprodukowanych w 2007 roku który model jest najtańszy?
+
+```{r}
+Zad18 <- auta2012 %>% filter(Rodzaj.paliwa == "olej napedowy (diesel)") %>% filter(Rok.produkcji == 2007) %>% group_by(Model) %>% summarise(medianaCeny = median(Cena.w.PLN, na.rm = TRUE)) %>% arrange(medianaCeny)
+head(Zad18)
+```
+
+#Zad 19
+
+#### Jakiego koloru auta mają największy medianowy przebieg?
+
+```{r}
+Zad19 <- auta2012 %>% group_by(Kolor) %>% summarise(medianaPrzebieg = median(Przebieg.w.km, na.rm = TRUE)) %>% arrange(-medianaPrzebieg)
+head(Zad19)
+```
+
